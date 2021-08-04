@@ -1,4 +1,5 @@
 #! /bin/bash
+banner(){
 echo
 echo
 echo                                                             "############################################"
@@ -7,12 +8,43 @@ echo                                                             "#           AL
 echo                                                             "#             @author-->Ammar<--           #"
 echo                                                             "#                                          #"
 echo                                                             "############################################"
+}
 
-read -p "ENTER YOUR FULL NAME : " fullname
-echo "Your are Done! "$fullname
+message(){
+echo "Press 1 to check ip"
+echo "Press 2 to check  MAC"
+echo "Press 3 to check ping"
+echo "Press 0 to Exit"
+}
+main(){
+read -p "Select your option :" option
 
-echo -n  "Please enter  the domain or ip to be pinged :"
-read pg
-echo -n "Enter  how many packets do you want to send: "
+if  [ $option -eq 1 ]
+ then  
+    echo "${red}IP = " $(hostname -I)
+elif [ $option -eq 2 ]
+ then 
+      echo "MAC address = " $(ip link show eth0 | grep link/ether |awk '{print $2}')
+elif [ $option -eq 3 ]
+ then 
+     echo -n "Enter domain or Ip : "
+      read pg
+echo -n "Enter packet  value : "
 read pk
-ping -c$pk  $pg
+ping -c$pk $pg
+
+elif [ $option -eq 0 ]
+ then
+        exit
+else  
+ echo "Wrong option!"
+fi
+}
+
+
+while true
+do
+banner
+message
+main
+done
